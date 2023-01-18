@@ -11,19 +11,25 @@ var input = Console.ReadLine();
 
 if (int.TryParse(input, out int consumption))
 {
-    NumberFormatInfo? NumberFormatInfo = CultureInfo.GetCultures(CultureTypes.SpecificCultures).Where(x => x.TwoLetterISOLanguageName.Contains("de")).FirstOrDefault()?.NumberFormat;
-    string currencySymbolEuro = NumberFormatInfo != null ? NumberFormatInfo.CurrencySymbol : "Euro";
-   
-    List <Tarrif> tarrifs = new List<Tarrif>();
-    tarrifs.Add(new Tarrif(new BasicElectricityTarrif(), consumption));
-    tarrifs.Add(new Tarrif(new PackagedElectricityTariff(), consumption));
-    tarrifs = tarrifs.OrderBy(x => x.AnnualCosts).ToList();
-   
-    foreach (var item in tarrifs)
+    if(consumption > 0)
     {
-        Console.WriteLine($"Tarrif name is {item.TarrifName} and the annual cost is {currencySymbolEuro} {item.AnnualCosts}");
-    }
+        NumberFormatInfo? NumberFormatInfo = CultureInfo.GetCultures(CultureTypes.SpecificCultures).Where(x => x.TwoLetterISOLanguageName.Contains("de")).FirstOrDefault()?.NumberFormat;
+        string currencySymbolEuro = NumberFormatInfo != null ? NumberFormatInfo.CurrencySymbol : "Euro";
 
+        List <Tarrif> tarrifs = new List<Tarrif>();
+        tarrifs.Add(new Tarrif(new BasicElectricityTarrif(), consumption));
+        tarrifs.Add(new Tarrif(new PackagedElectricityTariff(), consumption));
+        tarrifs = tarrifs.OrderBy(x => x.AnnualCosts).ToList();
+
+        foreach (var item in tarrifs)
+        {
+            Console.WriteLine($"Tarrif name is {item.TarrifName} and the annual cost is {currencySymbolEuro} {item.AnnualCosts}");
+        }
+    }
+    else
+    {
+         Console.WriteLine($"The entered number is {consumption} and it should be greater tha zero");
+    }
 }
 else
 {
